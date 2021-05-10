@@ -195,6 +195,7 @@ def getMyIP(interface):
     
     # TODO: Change this to retrieve and
     # return the IP of the current system.
+    interface = netifaces.interfaces()
 
     ipAddr = None # IP address
 
@@ -269,8 +270,8 @@ if len(sys.argv) < 2:
     # pass
 
 # TODO: Get the IP of the current system
-networkInfterfaces = netifaces.interfaces()   # Get all of the network interfaces on the system
-myIP = getMyIP(networkInfterfaces)       # Call the getMyIP function to retrieve the IP address
+myInterface = ""                
+myIP = getMyIP(myInterface)       # Call the getMyIP function to retrieve the IP address
 print('The IP of the current system is ' + myIP)
 
 # Get the hosts on the same network
