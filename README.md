@@ -1,6 +1,7 @@
 # CPSC456 Assignment 2: Python Worm
 
 #### Programmer(s): Anthony Berton
+#### Python version: 3.7
 <br>
 
 ---
