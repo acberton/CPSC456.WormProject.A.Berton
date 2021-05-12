@@ -25,9 +25,14 @@ If the worm.py program executed correctly in the first VM, then all the infected
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python worm.py -c &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python worm.py --clean*
 
+**Note:** If you want to spread the worm infection to hosts outside of your current network domain, run the worm.py file and include either "-m" or "--multi"
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python worm.py -m &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python worm.py --multi*
+
 ## Extra Credit:
 
 ### EC1: Cleaner function
-I implemented a function for cleaning the worm infection off of the hosts called CleanUp(sshClient). The function operates similarly to the SpreadAndExecute(sshClient)
-function in that they both pass an sshClient parameter and use it to initiate a file transfer object for either sending or removing files from the hosts. The clean up
-function removes the "/tmp/worm.py" and "/tmp/infected.txt" files from infected hosts.
+I implemented a function for cleaning the worm infection off of the hosts called CleanUp(sshClient). The function operates similarly to the SpreadAndExecute(sshClient) function in that they both pass an sshClient parameter and use it to initiate a file transfer object for either sending or removing files from the hosts. The clean up function removes the "/tmp/worm.py" and "/tmp/infected.txt" files from infected hosts.
+
+### EC2: Multi-spreading operation
+The multi-spread will spread the worm infection to hosts in the other network domain in the GNS3 topology. The multi-spread will operate in the getHostsOnTheSameNetwork() function where the port scanning takes place. If the user requests a multi-spread, then the program will scan for hosts in the "10.0.1.0/24" network like it does for the "10.0.0.0/24 network. The program will then add the scanned hosts from both networks onto the liveHosts list.
