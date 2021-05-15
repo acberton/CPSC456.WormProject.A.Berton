@@ -10,12 +10,16 @@
 ## How to Implement:
 First, select a Linux VM to run worm.py on. Then open a terminal on the VM. </br>
 
-In the terminal, go to the directory of your worm.py file and execute the infection by running the file
+Once you open your terminal, copy the worm.py file to the /tmp directory
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python worm.py*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*cp <worm.py_path> /tmp*
+
+Next, go to the directory of your worm.py file and execute the infection by running the file
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python /tmp/worm.py*
 
 If the program executes correctly, the hosts of the other two VMs should recieve the infection.</br>
-Open the other two VMs and open terminals in both of them. </br>
+Open the other VMs and open terminals in both of them. </br>
 Check to see if the hosts are infected by entering the following command in both terminals
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*hostname -I; ls /tmp*
@@ -24,11 +28,11 @@ If the worm.py program executed correctly in the first VM, then all the infected
 
 **Note:** If you want to execute a cleanup process on the infected hosts, run the worm.py file and include either "-c" or "--clean"
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python worm.py -c &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python worm.py --clean*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python /tmp/worm.py -c &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python /tmp/worm.py --clean*
 
 **Note:** If you want to spread the worm infection to hosts outside of your current network domain, run the worm.py file and include either "-m" or "--multi"
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python worm.py -m &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python worm.py --multi*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*python /tmp/worm.py -m &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; python /tmp/worm.py --multi*
 
 ## Extra Credit:
 
