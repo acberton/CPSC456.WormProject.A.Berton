@@ -2,6 +2,7 @@
 
 #### Programmer(s): Anthony Berton
 #### Python version: 3.7
+#### Extra Credit Implemented: Yes
 <br>
 
 ---
