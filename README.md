@@ -3,6 +3,7 @@
 #### Programmer(s): Anthony Berton
 #### Python version: 3.7
 #### Extra Credit Implemented: Yes
+#### Important note: When I ran the code, I had to change the code to remove the index '[0]' on sshInfo in the spreadAndeExecute() and CleanUp() function calls in line 314 and line 322 of my code. When I ran it as it was initially, I recieved an error message stating that SSHClient does not accept indexing
 <br>
 
 ---
